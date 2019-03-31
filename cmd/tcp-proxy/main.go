@@ -19,7 +19,7 @@ var (
 	localAddr   = flag.String("l", ":9999", "local address")
 	remoteAddr  = flag.String("r", "localhost:80", "remote address")
 	verbose     = flag.Bool("v", false, "display server actions")
-	veryverbose = flag.Bool("vv", false, "display server actions and all tcp data")
+	veryverbose = flag.Bool("vv", false, "display server actions and all tcp4 data")
 	nagles      = flag.Bool("n", false, "disable nagles algorithm")
 	hex         = flag.Bool("h", false, "output hex")
 	colors      = flag.Bool("c", false, "output ansi colors")
@@ -38,17 +38,17 @@ func main() {
 
 	logger.Info("Proxying from %v to %v", *localAddr, *remoteAddr)
 
-	laddr, err := net.ResolveTCPAddr("tcp", *localAddr)
+	laddr, err := net.ResolveTCPAddr("tcp4", *localAddr)
 	if err != nil {
 		logger.Warn("Failed to resolve local address: %s", err)
 		os.Exit(1)
 	}
-	raddr, err := net.ResolveTCPAddr("tcp", *remoteAddr)
+	raddr, err := net.ResolveTCPAddr("tcp4", *remoteAddr)
 	if err != nil {
 		logger.Warn("Failed to resolve remote address: %s", err)
 		os.Exit(1)
 	}
-	listener, err := net.ListenTCP("tcp", laddr)
+	listener, err := net.ListenTCP("tcp4", laddr)
 	if err != nil {
 		logger.Warn("Failed to open local port to listen: %s", err)
 		os.Exit(1)
